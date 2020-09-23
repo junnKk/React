@@ -3,6 +3,9 @@ import TodoListTemplate from './components/TodoListTemplate';
 import Form from "./components/Form";
 import TodoItemList from './components/TodoItemList';
 import Palette from './components/Palette';
+
+
+
 const colors = ['#343a40', '#f03e3e', '#12b886', '#228ae6']
 class App extends Component {
 
@@ -27,14 +30,15 @@ class App extends Component {
   }
 
   handleCreate = () => {
-    const { input, todos } = this.state;
+    const { input, todos, color } = this.state;
     this.setState({
-      input: '', //인풋 비우고ㅗ 
+      input: '', //인풋 비우고
       //concat을 이용하여 배열에 추가
       todos: todos.concat({
         id: this.id++,
         text: input,
-        checked: false
+        checked: false,
+        color
       })
     });
   }
@@ -72,21 +76,24 @@ class App extends Component {
     });
   }
 
-  // handleColor=()=>{
-
-  // }
-
+  handleColor =(color) =>{
+   this.setState({
+     color
+   })
+  }
 
   render() {
     const { input, todos, color} = this.state;
     const {
-      handleChange, handleCreate, handleKeyPress, handleToggle, handleRemove
+      handleChange, handleCreate, handleKeyPress, handleToggle, handleRemove, handleColor
     } = this;
 
     return (
       <TodoListTemplate color={(
         <Palette
           colors={colors}
+          selected ={color}
+          onSelect={handleColor}
           
           //onColor={handleColor}
 
@@ -98,6 +105,7 @@ class App extends Component {
           onKeyPress={handleKeyPress}
           onChange={handleChange}
           onCreate={handleCreate}
+          color={color}
         />
       )}>
         <TodoItemList todos={todos} onToggle={handleToggle} onRemove = {handleRemove}/>
